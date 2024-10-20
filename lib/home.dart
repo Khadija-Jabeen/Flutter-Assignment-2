@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondassignment/chat.dart';
-import 'call.dart'; // Import the CallPage
+import 'package:secondassignment/call.dart';
+import 'package:secondassignment/status.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -133,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: _currentIndex == 0 ? _buildChatList() :  CallPage(), // Use conditional to switch between pages
+       body: _getSelectedPage(), // Use method to get selected page
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: Container(
@@ -161,7 +162,9 @@ class _HomeViewState extends State<HomeView> {
               IconButton(
                 icon: const Icon(Icons.circle_notifications_sharp), // Status icon
                 onPressed: () {
-                  // Status action
+                  setState(() {
+                    _currentIndex = 1; // Switch to status page
+                  });
                 },
               ),
               IconButton(
@@ -174,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
                 icon: const Icon(Icons.call), // Call icon
                 onPressed: () {
                   setState(() {
-                    _currentIndex = 1; // Switch to call page
+                    _currentIndex = 2; // Switch to call page
                   });
                 },
               ),
@@ -183,6 +186,17 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+  }
+
+  // Get the currently selected page based on _currentIndex
+  Widget _getSelectedPage() {
+    if (_currentIndex == 0) {
+      return _buildChatList(); // Chat list (home page)
+    } else if (_currentIndex == 1) {
+      return const StatusView(); // Status page
+    } else {
+      return  CallPage(); // Call page
+    }
   }
 
   // Build the chat list view
